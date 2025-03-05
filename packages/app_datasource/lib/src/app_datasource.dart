@@ -17,7 +17,7 @@ class AppDatasource {
 
   /// Fetches the data which is to be displayed on the home screen.
   Future<DealModelList> getHomeDeals({
-    HomePageDealType dealCategory = HomePageDealType.top,
+    DealListingType dealCategory = DealListingType.top,
     int pageNumber = 1,
   }) async {
     final url = Uri.http(
@@ -27,8 +27,8 @@ class AppDatasource {
       {
         'per_page': '12',
         'page': pageNumber.toString(),
-        // 'fields':
-        //     'id,created_at,created_at_in_millis,image_medium,comments_count,title,permalink',
+        'fields':
+            'id,created_at,created_at_in_millis,image_medium,comments_count,title,permalink',
       },
     );
 

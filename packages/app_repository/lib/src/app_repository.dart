@@ -15,7 +15,7 @@ class AppRepository {
 
   ///
   Future<List<DealEntity>> getHomeDeals({
-    HomePageDealType dealCategory = HomePageDealType.top,
+    DealListingType dealCategory = DealListingType.top,
     int pageNumber = 1,
   }) async {
     try {

@@ -6,7 +6,7 @@ typedef DealModelList = List<DealModel>;
 /// {@template home_page_deals}
 /// Enum specifying the home page deal category.
 ///{@endtemplate}
-enum HomePageDealType {
+enum DealListingType {
   /// Top deals.
   top('/new'),
 
@@ -16,7 +16,7 @@ enum HomePageDealType {
   /// Featured Deals.
   featured('/discussed');
 
-  const HomePageDealType(this.endpoint);
+  const DealListingType(this.endpoint);
 
   /// Specifies which endpoint to contact for specific url.
   final String endpoint;

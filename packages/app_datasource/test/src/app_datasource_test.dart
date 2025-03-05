@@ -91,10 +91,10 @@ void main() {
           'forms proper url based on the passed parameter',
           () {
             test(
-              'for HomePageDealType.top',
+              'for DealListingType.top',
               () async {
                 await appDataSource.getHomeDeals(
-                  dealCategory: HomePageDealType.top,
+                  dealCategory: DealListingType.top,
                 );
 
                 verify(
@@ -108,10 +108,10 @@ void main() {
             );
 
             test(
-              'for HomePageDealType.popular',
+              'for DealListingType.popular',
               () async {
                 await appDataSource.getHomeDeals(
-                  dealCategory: HomePageDealType.popular,
+                  dealCategory: DealListingType.popular,
                 );
 
                 verify(
@@ -125,10 +125,10 @@ void main() {
             );
 
             test(
-              'for HomePageDealType.featured',
+              'for DealListingType.featured',
               () async {
                 await appDataSource.getHomeDeals(
-                  dealCategory: HomePageDealType.featured,
+                  dealCategory: DealListingType.featured,
                 );
 
                 verify(
