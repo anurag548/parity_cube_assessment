@@ -7,23 +7,15 @@ import 'package:app_repository/app_repository.dart';
 class AppRepository {
   /// {@macro app_repository}
   const AppRepository({
-    required AppDatasource appDataSource,
+    required AppRemoteDatasource appRemoteDataSource,
     required AppLocalDataSource appLocalDataSource,
-  })  : _appDatasource = appDataSource,
+  })  : _appRemoteDatasource = appRemoteDataSource,
         _appLocalDataSource = appLocalDataSource;
 
   /// The Datasource to fetch the data from the server.
-  final AppDatasource _appDatasource;
+  final AppRemoteDatasource _appRemoteDatasource;
 
   final AppLocalDataSource _appLocalDataSource;
-
-  static const Map<DealListingType, DealModelList> dealsMap = {
-    DealListingType.top: [],
-    DealListingType.featured: [],
-    DealListingType.popular: [],
-  };
-
-  List<DealEntity> get _getDealsList = 
 
   ///
   Future<List<DealEntity>> getHomeDeals({
@@ -32,21 +24,31 @@ class AppRepository {
     int perPage = 12,
   }) async {
     try {
+      final List<DealEntity> dealsList;
 
-
-
-      final dealsList = await _appDatasource.getHomeDeals(
+      final localDealsList = await _appLocalDataSource.getDeals(
         dealCategory: dealCategory,
         pageNumber: pageNumber,
+        perPage: perPage,
       );
-
-      return dealsList.map<DealEntity>((dealModel) {
-        _appLocalDataSource.writeDeals(
+      if (localDealsList.isNotEmpty) {
+        dealsList =
+            localDealsList.map<DealEntity>(DealEntity.fromDealModel).toList();
+      } else {
+        final remoteDealList = await _appRemoteDatasource.getDeals(
           dealCategory: dealCategory,
-          dealModel: dealModel,
+          pageNumber: pageNumber,
         );
-        return DealEntity.fromDealModel(dealModel);
-      }).toList();
+        dealsList = remoteDealList.map<DealEntity>((dealModel) {
+          _appLocalDataSource.writeDeals(
+            dealCategory: dealCategory,
+            dealModel: dealModel,
+          );
+          return DealEntity.fromDealModel(dealModel);
+        }).toList();
+      }
+
+      return dealsList;
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
         error,

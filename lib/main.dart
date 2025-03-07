@@ -16,12 +16,15 @@ void main() {
               comments_count INTEGER, 
               created_at_in_millis INTEGER,
               title TEXT,
-              imageUrl TEXT, 
+              image_medium TEXT, 
               deal_category TEXT)''');
       },
     );
+
+    final httpClient = http.Client();
+
     final appRepository = AppRepository(
-      appDataSource: AppDatasource(httpClient: http.Client()),
+      appRemoteDataSource: AppRemoteDatasourceImpl(httpClient: httpClient),
       appLocalDataSource: AppLocalDatasourceImpl(database: database),
     );
 

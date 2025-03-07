@@ -13,7 +13,8 @@ class DealsListingView extends StatefulWidget {
   State<DealsListingView> createState() => _DealsListingViewState();
 }
 
-class _DealsListingViewState extends State<DealsListingView> {
+class _DealsListingViewState extends State<DealsListingView>
+    with AutomaticKeepAliveClientMixin {
   final _scrollController = ScrollController();
 
   @override
@@ -24,6 +25,7 @@ class _DealsListingViewState extends State<DealsListingView> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: BlocBuilder<DealsListingBloc, DealsListingState>(
         builder: (context, state) {
@@ -156,4 +158,8 @@ class _DealsListingViewState extends State<DealsListingView> {
     final currentScroll = _scrollController.offset;
     return currentScroll >= (maxScroll * 0.9);
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

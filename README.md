@@ -2,15 +2,19 @@
 
 A new Flutter project.
 
-## Getting Started
+## Getting Started 🚀
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+To run the desired flavor either use the launch configuration in VSCode/Android Studio or use the following commands:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```sh
+flutter run
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## INFO
+I have tried to cover most of the functionality as listed in the documentation for the assessment few knits and bits have been left out due to time constraints
+
+Test have also been for the remote api client even though they are not passing now they were when there was only single data source class.
+
+Needed some more time to write the integration and widget test.

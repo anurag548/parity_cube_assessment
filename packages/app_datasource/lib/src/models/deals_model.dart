@@ -52,7 +52,7 @@ class DealModel extends Equatable {
       'id': id,
       'comments_count': commentCount,
       'created_at_in_millis': createdAt,
-      'imageUrl': imageUrl,
+      'image_medium': imageUrl,
       'title': title,
     };
   }

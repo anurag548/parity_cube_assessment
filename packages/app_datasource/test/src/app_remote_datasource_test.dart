@@ -37,12 +37,12 @@ Matcher areJsonHeaders({String? authorizationToken}) {
 void main() {
   late final http.Client httpClient;
 
-  late final AppDatasource appDataSource;
+  late final AppRemoteDatasource appDataSource;
 
   setUpAll(() {
     registerFallbackValue(Uri());
     httpClient = MockHttpClient();
-    appDataSource = AppDatasource(httpClient: httpClient);
+    appDataSource = AppRemoteDatasourceImpl(httpClient: httpClient);
   });
 
   setUp(() {
@@ -62,7 +62,7 @@ void main() {
   group('AppDatasource', () {
     test('can be instantiated', () {
       expect(
-        AppDatasource(httpClient: httpClient),
+        AppRemoteDatasourceImpl(httpClient: httpClient),
         isNotNull,
       );
     });
@@ -73,7 +73,7 @@ void main() {
         test(
           'has proper base url',
           () async {
-            await appDataSource.getHomeDeals();
+            await appDataSource.getDeals();
 
             verify(
               () => httpClient.get(
@@ -93,7 +93,7 @@ void main() {
             test(
               'for DealListingType.top',
               () async {
-                await appDataSource.getHomeDeals(
+                await appDataSource.getDeals(
                   dealCategory: DealListingType.top,
                 );
 
@@ -110,7 +110,7 @@ void main() {
             test(
               'for DealListingType.popular',
               () async {
-                await appDataSource.getHomeDeals(
+                await appDataSource.getDeals(
                   dealCategory: DealListingType.popular,
                 );
 
@@ -127,7 +127,7 @@ void main() {
             test(
               'for DealListingType.featured',
               () async {
-                await appDataSource.getHomeDeals(
+                await appDataSource.getDeals(
                   dealCategory: DealListingType.featured,
                 );
 
@@ -144,7 +144,7 @@ void main() {
         );
 
         test('makes corrects request without query param', () async {
-          await appDataSource.getHomeDeals();
+          await appDataSource.getDeals();
 
           const query = 'per_page=12&page=1';
 
@@ -158,7 +158,7 @@ void main() {
         });
 
         test('makes corrects request without query param', () async {
-          await appDataSource.getHomeDeals();
+          await appDataSource.getDeals();
 
           const query = 'per_page=12&page=1';
 
@@ -172,7 +172,7 @@ void main() {
         });
 
         test('returns DealModelList properly', () async {
-          final dealModelList = await appDataSource.getHomeDeals();
+          final dealModelList = await appDataSource.getDeals();
 
           expect(dealModelList, isA<DealModelList>());
         });
@@ -188,7 +188,7 @@ void main() {
           );
 
           expect(
-            () => appDataSource.getHomeDeals(),
+            () => appDataSource.getDeals(),
             throwsA(isA<AppApiRequestFailure>()),
           );
         });
@@ -196,7 +196,7 @@ void main() {
         test(
           'makes correct request with proper authorisation token',
           () async {
-            await appDataSource.getHomeDeals();
+            await appDataSource.getDeals();
 
             verify(
               () => httpClient.get(

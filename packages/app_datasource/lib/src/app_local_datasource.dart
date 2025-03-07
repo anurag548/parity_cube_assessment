@@ -1,22 +1,17 @@
-import 'package:app_datasource/app_datasource.dart';
-import 'package:sqflite/sqflite.dart';
+part of 'app_data_source.dart';
 
-abstract interface class AppDataSource {
-  Future<void> getDeals({
-    DealListingType dealCategory = DealListingType.top,
-    int pageNumber = 1,
-  });
-}
-
+/// {@template app_local_datasource}
+/// Class for storing the deals model to the local storage.
+/// {@endtemplate}
 abstract interface class AppLocalDataSource extends AppDataSource {
-  // Future<void> getLocal
-
   @override
-  Future<DealModel> getDeals({
+  Future<DealModelList> getDeals({
     DealListingType dealCategory = DealListingType.top,
     int pageNumber = 1,
+    int perPage = 12,
   });
 
+  /// Writes the deals model to the local storage.
   Future<bool> writeDeals({
     required DealListingType dealCategory,
     required DealModel dealModel,
@@ -34,19 +29,34 @@ class AppLocalDatasourceImpl implements AppLocalDataSource {
 
   final Database _database;
 
+  static final Map<DealListingType, DealModelList> _dealsListCache = {
+    DealListingType.top: [],
+    DealListingType.featured: [],
+    DealListingType.popular: [],
+  };
+
   @override
-  Future<DealModel> getDeals({
+  Future<DealModelList> getDeals({
     DealListingType dealCategory = DealListingType.top,
     int pageNumber = 1,
+    int perPage = 12,
   }) async {
-    await _database.query(
+    final data = await _database.query(
       'deals_tbl',
-      where: dealCategory.name,
+      where: 'deal_category = ?',
+      whereArgs: [dealCategory.name],
+      limit: 12,
+      offset: _dealsListCache[dealCategory]?.length,
     );
 
-    final data = <String, dynamic>{};
+    final dealsModelList = data.map(DealModel.fromJson).toList();
 
-    return DealModel.fromJson(data);
+    _dealsListCache.update(
+      dealCategory,
+      (dealsList) => List.from(dealsList)..addAll(dealsModelList),
+    );
+
+    return dealsModelList;
   }
 
   @override

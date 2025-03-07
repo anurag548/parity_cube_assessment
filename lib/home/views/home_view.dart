@@ -21,6 +21,31 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return DealsListingPage();
+    return DefaultTabController(
+      length: 3,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 50,
+            child: TabBar(
+              tabs: [
+                Tab(text: 'Top'),
+                Tab(text: 'Popular'),
+                Tab(text: 'Featured'),
+              ],
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              children: [
+                DealsListingPage(),
+                DealsListingPage(dealListingType: DealListingType.popular),
+                DealsListingPage(dealListingType: DealListingType.featured),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -1,31 +1,38 @@
-import 'dart:convert';
-import 'dart:io';
+part of 'app_data_source.dart';
 
-import 'package:app_datasource/src/models/models.dart';
-import 'package:http/http.dart';
+abstract interface class AppRemoteDatasource extends AppDataSource {
+  @override
+  Future<DealModelList> getDeals({
+    DealListingType dealCategory = DealListingType.top,
+    int pageNumber = 1,
+    int perPage = 12,
+  });
+}
 
 /// {@template app_datasource}
 /// data source package for the app
 /// {@endtemplate}
-class AppDatasource {
+class AppRemoteDatasourceImpl implements AppRemoteDatasource {
   /// {@macro app_datasource}
-  const AppDatasource({
+  const AppRemoteDatasourceImpl({
     required Client httpClient,
   }) : _httpClient = httpClient;
 
   final Client _httpClient;
 
   /// Fetches the data which is to be displayed on the home screen.
-  Future<DealModelList> getHomeDeals({
+  @override
+  Future<DealModelList> getDeals({
     DealListingType dealCategory = DealListingType.top,
     int pageNumber = 1,
+    int perPage = 12,
   }) async {
     final url = Uri.http(
       'stagingauth.desidime.com',
       // ignore: prefer_interpolation_to_compose_strings
       '/v4/home' + dealCategory.endpoint,
       {
-        'per_page': '12',
+        'per_page': perPage.toString(),
         'page': pageNumber.toString(),
         'fields':
             'id,created_at,created_at_in_millis,image_medium,comments_count,title,permalink',
