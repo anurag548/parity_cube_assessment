@@ -31,6 +31,7 @@ class _DealsListingViewState extends State<DealsListingView> {
             return ListView.builder(
               controller: _scrollController,
               itemCount: state.dealsEntityList.length,
+              shrinkWrap: true,
               itemBuilder: (context, index) {
                 final deal = state.dealsEntityList[index];
                 return Card(
